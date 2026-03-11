@@ -1,128 +1,233 @@
+import networkx as nx
+import matplotlib.pyplot as plt
 import streamlit as st
 import json
 import os
 import random
-import pandas as pd # Excel/CSV işlemleri için gerekli
+import pandas as pd
 
-# 1. Sayfa Yapılandırması
-st.set_page_config(page_title="R&D Food Lab", page_icon="🧪", layout="wide")
+# -------------------------
+# DATA FUNCTIONS
+# -------------------------
 
-# 2. Veri Fonksiyonları
 def load_data():
-    if not os.path.exists('data.json'):
-        with open('data.json', 'w', encoding='utf-8') as f:
+    if not os.path.exists("data.json"):
+        with open("data.json", "w", encoding="utf-8") as f:
             json.dump({}, f)
         return {}
     try:
-        with open('data.json', 'r', encoding='utf-8') as file:
-            return json.load(file)
-    except: return {}
+        with open("data.json", "r", encoding="utf-8") as f:
+            return json.load(f)
+    except:
+        return {}
 
-def save_data(new_data):
-    with open('data.json', 'w', encoding='utf-8') as file:
-        json.dump(new_data, file, indent=4, ensure_ascii=False)
+def save_data(data):
+    with open("data.json", "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=4, ensure_ascii=False)
 
 data = load_data()
 
-# --- GÖRSEL TEMA ---
-st.markdown("""
-    <style>
-    .stApp { background-color: #F8F9FA; }
-    h1, h2 { color: #1B4332 !important; }
-    .stButton>button { background-color: #2D6A4F; color: white; border-radius: 5px; }
-    </style>
-    """, unsafe_allow_html=True)
+# -------------------------
+# ENGINES (Similarity & Suggestions)
+# -------------------------
 
-# 3. Yan Menü (Sidebar)
+def find_similar(target, data):
+    if target not in data:
+        return []
+    base = data[target]
+    results = []
+    for name, info in data.items():
+        if name == target: continue
+        score = 0
+        if info.get("category") == base.get("category"): score += 1
+        if info.get("function") == base.get("function"): score += 2
+        if info.get("texture") == base.get("texture"): score += 1
+        if score >= 2:
+            results.append(name)
+    return results
+
+def suggest_pairings(ingredient, data):
+    if ingredient not in data:
+        return []
+    flavor = data[ingredient].get("flavor")
+    suggestions = []
+    for name, info in data.items():
+        if name == ingredient: continue
+        if info.get("flavor") == flavor:
+            suggestions.append(name)
+    return random.sample(suggestions, min(len(suggestions), 5))
+
+# -------------------------
+# UI STYLE
+# -------------------------
+
+st.set_page_config(page_title="R&D Food Lab", layout="wide")
+
+st.markdown("""
+<style>
+.stApp {background-color:#F5F7F6;}
+h1, h2, h3 {color:#1B4332 !important;}
+.stButton>button {background:#2D6A4F; color:white; border-radius:8px;}
+.stMetric {background: white; padding: 15px; border-radius: 10px; box-shadow: 2px 2px 5px rgba(0,0,0,0.05);}
+</style>
+""", unsafe_allow_html=True)
+
+# -------------------------
+# SIDEBAR
+# -------------------------
+
 st.sidebar.title("🧪 R&D Control Center")
 
-# --- TOPLU VERİ YÜKLEME (CSV/EXCEL) ---
-st.sidebar.header("📂 Bulk Import (Excel/CSV)")
-uploaded_file = st.sidebar.file_uploader("Upload your ingredient list", type=['csv', 'xlsx'])
+# BULK IMPORT
+st.sidebar.subheader("📂 Bulk Import")
+file = st.sidebar.file_uploader("Upload dataset (CSV/Excel)", type=["csv", "xlsx"])
 
-if uploaded_file is not None:
-    try:
-        if uploaded_file.name.endswith('.csv'):
-            df = pd.read_csv(uploaded_file)
-        else:
-            df = pd.read_excel(uploaded_file)
-        
-        if st.sidebar.button("Process & Import File"):
-            for index, row in df.iterrows():
-                name = str(row['Name']).strip().capitalize()
-                # Excel'deki sütunları JSON yapımıza eşliyoruz
+if file:
+    if st.sidebar.button("Import File"):
+        try:
+            df = pd.read_csv(file) if file.name.endswith(".csv") else pd.read_excel(file)
+            for _, row in df.iterrows():
+                name = str(row["Name"]).strip().capitalize()
                 data[name] = {
-                    "pairings": [p.strip().capitalize() for p in str(row['Pairings']).split(",")],
-                    "category": row['Category'],
-                    "flavor": row['Flavor'],
-                    "fat_content": int(row['Fat']),
-                    "texture": row['Texture'],
-                    "function": row['Function']
+                    "pairings": [p.strip().capitalize() for p in str(row["Pairings"]).split(",")],
+                    "category": row.get("Category", "Other"),
+                    "flavor": row.get("Flavor", "Neutral"),
+                    "fat_content": int(row.get("Fat", 0)),
+                    "texture": row.get("Texture", "N/A"),
+                    "function": row.get("Function", "N/A"),
+                    "cost": float(row.get("Cost", 0)), # MALİYET EKLENDİ
+                    "allergens": str(row.get("Allergens", "None")).split(",") # ALERJEN EKLENDİ
                 }
             save_data(data)
-            st.sidebar.success(f"Successfully imported {len(df)} items!")
+            st.sidebar.success("Dataset Imported!")
             st.rerun()
-    except Exception as e:
-        st.sidebar.error(f"Error: Check column names! {e}")
+        except Exception as e:
+            st.sidebar.error(f"Error: {e}")
 
-# --- TEKİL VERİ EKLEME FORMU ---
-st.sidebar.divider()
-st.sidebar.header("➕ Add Single Ingredient")
-with st.sidebar.form("add_form", clear_on_submit=True):
-    new_name = st.text_input("Name:").strip().capitalize()
-    new_cat = st.selectbox("Category:", ["Proteins", "Lipids", "Carbs", "Dairy", "Spices", "Additives", "Other"])
-    new_flavor = st.selectbox("Flavor:", ["Neutral", "Sweet", "Sour", "Bitter", "Spicy", "Umami"])
-    new_fat = st.slider("Fat Content (%)", 0, 100, 0)
-    new_texture = st.selectbox("Texture:", ["Liquid", "Powder", "Creamy", "Solid", "Gel"])
-    new_function = st.selectbox("Function:", ["Base", "Emulsifier", "Thickener", "Flavoring"])
-    new_pairs = st.text_area("Pairings (comma separated):")
-    submit = st.form_submit_button("Save to Library")
+# ADD INGREDIENT
+st.sidebar.subheader("➕ Add Ingredient")
+with st.sidebar.form("add"):
+    name = st.text_input("Name").strip().capitalize()
+    category = st.selectbox("Category", ["Proteins", "Lipids", "Carbs", "Additives", "Dairy", "Spices"])
+    flavor = st.selectbox("Flavor", ["Sweet", "Sour", "Neutral", "Bitter", "Umami", "Spicy"])
+    fat = st.slider("Fat %", 0, 100, 0)
+    cost = st.number_input("Cost (per kg/L)", min_value=0.0, step=0.1)
+    texture = st.selectbox("Texture", ["Liquid", "Powder", "Solid", "Creamy", "Gel"])
+    function = st.selectbox("Function", ["Base", "Emulsifier", "Thickener", "Sweetener", "Stabilizer"])
+    allergens = st.multiselect("Allergens", ["Gluten", "Dairy", "Nuts", "Soy", "Egg", "Fish"])
+    pairs = st.text_area("Pairings (comma separated)")
+    submit = st.form_submit_button("Add to Lab")
 
-    if submit and new_name:
-        pair_list = [p.strip().capitalize() for p in new_pairs.split(",") if p.strip()]
-        data[new_name] = {
-            "pairings": pair_list, "category": new_cat, "flavor": new_flavor,
-            "fat_content": new_fat, "texture": new_texture, "function": new_function
+    if submit and name:
+        data[name] = {
+            "pairings": [p.strip().capitalize() for p in pairs.split(",") if p],
+            "category": category, "flavor": flavor, "fat_content": fat,
+            "texture": texture, "function": function, "cost": cost, "allergens": allergens
         }
         save_data(data)
-        st.sidebar.success(f"Registered: {new_name}")
+        st.sidebar.success(f"{name} added!")
         st.rerun()
 
-# --- SİLME ---
-delete_target = st.sidebar.selectbox("Delete Item:", ["None"] + sorted(list(data.keys())))
-if st.sidebar.button("Delete"):
-    if delete_target != "None":
-        del data[delete_target]
-        save_data(data)
-        st.rerun()
+# DELETE
+st.sidebar.subheader("🗑️ Management")
+target = st.sidebar.selectbox("Select to Delete", ["None"] + sorted(list(data.keys())))
+if st.sidebar.button("Delete Permanently") and target != "None":
+    del data[target]
+    save_data(data)
+    st.rerun()
 
-# 4. Ana Sayfa
-st.title("🧪 Food Innovation & R&D Lab")
-st.write("Professional formulation and ingredient pairing analysis.")
+# -------------------------
+# MAIN PAGE
+# -------------------------
 
-# ARAMA
-search = st.text_input("Search technical database:").strip().capitalize()
+st.title("🧪 Food Innovation AI Lab")
+
+# SEARCH SECTION
+search = st.text_input("🔍 Search Technical Database (e.g. Lecithin, Butter)")
 
 if search:
-    if search in data:
-        item = data[search]
-        st.success(f"### TECHNICAL DATA: {search}")
+    results = [k for k in data if search.lower() in k.lower()]
+    if results:
+        selected = st.selectbox("Select Ingredient", results)
+        item = data[selected]
         
-        c1, c2, c3 = st.columns(3)
-        c1.metric("Fat Content", f"%{item.get('fat_content', 0)}")
-        c2.metric("Function", item.get('function', 'N/A'))
-        c3.metric("Category", item['category'])
-        
-        st.write(f"**Texture Profile:** {item.get('texture', 'N/A')} | **Flavor:** {item.get('flavor', 'N/A')}")
-        
-        st.divider()
-        st.write("**R&D Pairing Suggestions:**")
-        cols = st.columns(4)
-        for idx, p in enumerate(item['pairings']):
-            cols[idx % 4].info(f"🧬 {p}")
-    else:
-        st.warning("Ingredient not found in R&D database.")
+        st.success(f"### TECHNICAL ANALYSIS: {selected}")
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("Fat %", f"{item.get('fat_content', 0)}%")
+        c2.metric("Cost/kg", f"${item.get('cost', 0):.2f}")
+        c3.metric("Function", item.get("function", "N/A"))
+        c4.metric("Category", item.get("category", "N/A"))
 
-# Developer Mode
+        # Alerjen Uyarısı
+        if item.get("allergens") and item["allergens"] != ["None"]:
+            st.warning(f"⚠️ **Allergens:** {', '.join(item['allergens'])}")
+
+        st.write(f"**Texture Profile:** {item.get('texture')} | **Flavor Profile:** {item.get('flavor')}")
+
+        # Pairings & Similarities
+        tab1, tab2, tab3 = st.tabs(["🤝 Pairings", "🧬 Similar Ingredients", "🤖 AI Suggestions"])
+        
+        with tab1:
+            cols = st.columns(4)
+            for i, p in enumerate(item.get("pairings", [])):
+                cols[i % 4].info(p)
+        
+        with tab2:
+            sim = find_similar(selected, data)
+            cols = st.columns(4)
+            for i, s in enumerate(sim):
+                cols[i % 4].warning(s)
+        
+        with tab3:
+            try:
+                ai_pairs = suggest_pairings(selected, data)
+                cols = st.columns(4)
+                for i, p in enumerate(ai_pairs):
+                    cols[i % 4].success(p)
+            except: st.write("Add more data for AI suggestions.")
+
+# FORMULATION BUILDER
+st.divider()
+st.subheader("📝 Formulation Builder & Costing")
+
+if data:
+    selected_ingredients = st.multiselect("Select Ingredients for Formula:", sorted(list(data.keys())))
+    if selected_ingredients:
+        recipe_data = []
+        total_cost = 0
+        total_fat = 0
+        
+        for ing in selected_ingredients:
+            col_a, col_b = st.columns([3, 1])
+            ratio = col_b.number_input(f"% {ing}", 0.0, 100.0, 0.0, key=f"rec_{ing}")
+            
+            if ratio > 0:
+                cost_contrib = (data[ing].get('cost', 0) * (ratio / 100))
+                fat_contrib = (data[ing].get('fat_content', 0) * (ratio / 100))
+                total_cost += cost_contrib
+                total_fat += fat_contrib
+                recipe_data.append({"Ingredient": ing, "Ratio %": ratio, "Cost Contrib": cost_contrib})
+
+        st.metric("Total Formulation Cost (per kg/L)", f"${total_cost:.2f}")
+        st.metric("Final Product Fat Content", f"%{total_fat:.2f}")
+
+# NETWORK VISUALIZATION
+st.divider()
+st.subheader("🕸️ Ingredient Network Map")
+if st.button("Generate Network Graph"):
+    G = nx.Graph()
+    for name, info in data.items():
+        for p in info.get("pairings", []):
+            if p in data:
+                G.add_edge(name, p)
+    
+    if len(G.nodes) > 0:
+        fig, ax = plt.subplots(figsize=(10, 6))
+        pos = nx.spring_layout(G)
+        nx.draw(G, pos, with_labels=True, node_color='#B7E4C7', node_size=800, font_size=7, edge_color='#40916C')
+        st.pyplot(fig)
+    else:
+        st.write("Not enough connected data to show network.")
+
 if st.sidebar.checkbox("Show Raw Database"):
     st.json(data)
