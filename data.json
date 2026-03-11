@@ -1,5 +1,25 @@
 {
-  "Tomato": ["Basil", "Garlic", "Olive Oil", "Mozzarella"],
-  "Chocolate": ["Orange", "Mint", "Hazelnut", "Sea Salt"],
-  "Apple": ["Cinnamon", "Walnut", "Caramel", "Honey"]
+    "Tomato": [
+        "Basil",
+        "Garlic",
+        "Olive Oil",
+        "Mozzarella"
+    ],
+    "Chocolate": [
+        "Orange",
+        "Mint",
+        "Hazelnut",
+        "Sea Salt"
+    ],
+    "Apple": [
+        "Cinnamon",
+        "Walnut",
+        "Caramel",
+        "Honey"
+    ],
+    "Coffee": [
+        "\"milk",
+        "Chocolate",
+        "Hazelnut"
+    ]
 }
