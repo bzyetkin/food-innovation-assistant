@@ -39,15 +39,14 @@
     },
     "Cocoa butter": {
         "pairings": [
-            "Sugar",
-            "Milk",
+            "Chocolate",
             "Vanilla"
         ],
         "category": "Lipids",
-        "flavor": "Sweet",
+        "flavor": "Neutral",
         "fat_content": 100,
         "texture": "Solid",
-        "function": "Base",
+        "function": "Fat",
         "cost": 0.0,
         "allergens": [
             "None"
@@ -56,8 +55,8 @@
     "Xanthan gum": {
         "pairings": [
             "Water",
-            "Acetic acid",
-            "Salt"
+            "Salt",
+            "Flour"
         ],
         "category": "Additives",
         "flavor": "Neutral",
@@ -847,6 +846,192 @@
         "fat_content": 0,
         "texture": "Powder",
         "function": "Flavor Enhancer",
+        "cost": 0.0,
+        "allergens": [
+            "None"
+        ]
+    },
+    "Butter": {
+        "pairings": [
+            "Flour",
+            "Milk",
+            "Salt",
+            "Vanilla"
+        ],
+        "category": "Dairy",
+        "flavor": "Neutral",
+        "fat_content": 82,
+        "texture": "Solid",
+        "function": "Base",
+        "cost": 0.0,
+        "allergens": [
+            "None"
+        ]
+    },
+    "Flour": {
+        "pairings": [
+            "Butter",
+            "Milk",
+            "Eggs",
+            "Water"
+        ],
+        "category": "Carbs",
+        "flavor": "Neutral",
+        "fat_content": 1,
+        "texture": "Powder",
+        "function": "Base",
+        "cost": 0.0,
+        "allergens": [
+            "None"
+        ]
+    },
+    "Milk": {
+        "pairings": [
+            "Butter",
+            "Flour",
+            "Eggs",
+            "Vanilla"
+        ],
+        "category": "Dairy",
+        "flavor": "Neutral",
+        "fat_content": 3,
+        "texture": "Liquid",
+        "function": "Base",
+        "cost": 0.0,
+        "allergens": [
+            "None"
+        ]
+    },
+    "Eggs": {
+        "pairings": [
+            "Flour",
+            "Milk",
+            "Sugar",
+            "Salt"
+        ],
+        "category": "Proteins",
+        "flavor": "Neutral",
+        "fat_content": 10,
+        "texture": "Liquid",
+        "function": "Emulsifier",
+        "cost": 0.0,
+        "allergens": [
+            "None"
+        ]
+    },
+    "Sugar": {
+        "pairings": [
+            "Eggs",
+            "Vanilla",
+            "Cocoa",
+            "Water"
+        ],
+        "category": "Carbs",
+        "flavor": "Sweet",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Sweetener",
+        "cost": 0.0,
+        "allergens": [
+            "None"
+        ]
+    },
+    "Salt": {
+        "pairings": [
+            "Butter",
+            "Eggs",
+            "Cocoa",
+            "Flour"
+        ],
+        "category": "Spices",
+        "flavor": "Neutral",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Flavor",
+        "cost": 0.0,
+        "allergens": [
+            "None"
+        ]
+    },
+    "Vanilla": {
+        "pairings": [
+            "Butter",
+            "Milk",
+            "Sugar",
+            "Cocoa"
+        ],
+        "category": "Spices",
+        "flavor": "Sweet",
+        "fat_content": 0,
+        "texture": "Liquid",
+        "function": "Flavor",
+        "cost": 0.0,
+        "allergens": [
+            "None"
+        ]
+    },
+    "Cocoa": {
+        "pairings": [
+            "Sugar",
+            "Vanilla",
+            "Salt",
+            "Milk"
+        ],
+        "category": "Carbs",
+        "flavor": "Bitter",
+        "fat_content": 20,
+        "texture": "Powder",
+        "function": "Flavor",
+        "cost": 0.0,
+        "allergens": [
+            "None"
+        ]
+    },
+    "Lecithin": {
+        "pairings": [
+            "Water",
+            "Oil",
+            "Eggs",
+            "Cocoa"
+        ],
+        "category": "Additives",
+        "flavor": "Neutral",
+        "fat_content": 90,
+        "texture": "Liquid",
+        "function": "Emulsifier",
+        "cost": 0.0,
+        "allergens": [
+            "None"
+        ]
+    },
+    "Water": {
+        "pairings": [
+            "Flour",
+            "Sugar",
+            "Lecithin",
+            "Xanthan gum"
+        ],
+        "category": "Other",
+        "flavor": "Neutral",
+        "fat_content": 0,
+        "texture": "Liquid",
+        "function": "Base",
+        "cost": 0.0,
+        "allergens": [
+            "None"
+        ]
+    },
+    "Oil": {
+        "pairings": [
+            "Lecithin",
+            "Salt",
+            "Eggs"
+        ],
+        "category": "Lipids",
+        "flavor": "Neutral",
+        "fat_content": 100,
+        "texture": "Liquid",
+        "function": "Base",
         "cost": 0.0,
         "allergens": [
             "None"
