@@ -1,23 +1,25 @@
-# Food Innovation Assistant
+# 🧪 AI-Powered Food R&D & Formulation Assistant
 
-## Overview
-A platform designed to assist with innovative food product development and culinary innovation.
+A professional digital workspace designed to bridge the gap between **Food Science** and **Software Engineering**. This tool assists R&D specialists in ingredient management, technical formulation, and flavor synergy analysis.
 
-## Features
-- Recipe development and iteration
-- Ingredient analysis and sourcing
-- Nutritional information tracking
-- Market trend analysis
-- Prototype testing documentation
+## 🚀 Key Features
 
-## Getting Started
-1. Clone the repository
-2. Install dependencies
-3. Configure your environment
-4. Run the application
+* **Technical Ingredient Database:** Track fat content, texture, flavor profiles, and functional roles (emulsifiers, stabilizers, etc.) for every raw material.
+* **Formulation & Costing Builder:** Create recipes with real-time calculations for total fat content and unit cost ($/kg).
+* **Ingredient Synergy Network Map:** A graph-theory based visualization showing interactions and pairings between ingredients using `NetworkX`.
+* **Safety & Compliance:** Integrated allergen tracking (Gluten, Dairy, Soy, etc.) during the formulation process.
+* **Bulk Data Management:** Support for Excel/CSV imports to quickly scale your ingredient library.
 
-## Contributing
-Contributions are welcome. Please follow the project's contribution guidelines.
+## 🧠 Development Vision: "The Citizen Developer"
+This project is a result of my personal journey in combining my **Food R&D expertise** with my passion for **Software Development**. By utilizing AI-driven development tools, I've transformed a personal hobby into a professional efficiency tool. It demonstrates how modern AI can empower domain experts to build their own digital solutions.
 
-## License
-See LICENSE file for details.
+## 🛠️ Tech Stack
+* **Language:** Python
+* **UI Framework:** Streamlit
+* **Data Handling:** Pandas & JSON
+* **Graph Theory:** NetworkX & Matplotlib
+
+## 🏁 Getting Started
+1. Clone the repository:
+   ```bash
+   git clone [https://github.com/yetkinbiri/food_innovation_assistant.git](https://github.com/yetkinbiri/food_innovation_assistant.git)
