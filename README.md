@@ -22,4 +22,4 @@ This project is a result of my personal journey in combining my **Food R&D exper
 ## 🏁 Getting Started
 1. Clone the repository:
    ```bash
-   git clone [https://github.com/yetkinbiri/food_innovation_assistant.git](https://github.com/yetkinbiri/food_innovation_assistant.git)
+   git clone [https://github.com/bzyetkin/food_innovation_assistant.git](https://github.com/yetkinbiri/food_innovation_assistant.git)
