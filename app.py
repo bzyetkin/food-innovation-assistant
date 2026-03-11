@@ -1,109 +1,149 @@
 import streamlit as st
 import json
 import os
-import random  # <-- Bu yeni satırı ekle
-import streamlit as st
-import json
-import os
+import random
 
-# 1. Sayfa Yapılandırması (En üstte olmalı)
-st.set_page_config(page_title="Food Innovation v5", page_icon="🍳")
+# 1. Sayfa Yapılandırması
+st.set_page_config(page_title="Chef's Innovation Assistant", page_icon="🍳", layout="wide")
 
-# 2. Veri Yükleme ve Kaydetme Fonksiyonları
+# 2. Veri Fonksiyonları
 def load_data():
     if not os.path.exists('data.json'):
+        with open('data.json', 'w', encoding='utf-8') as f:
+            json.dump({}, f)
         return {}
-    with open('data.json', 'r', encoding='utf-8') as file:
-        return json.load(file)
+    try:
+        with open('data.json', 'r', encoding='utf-8') as file:
+            return json.load(file)
+    except:
+        return {}
 
 def save_data(new_data):
     with open('data.json', 'w', encoding='utf-8') as file:
-        json.dump(new_data, file, indent=4)
+        json.dump(new_data, file, indent=4, ensure_ascii=False)
 
 data = load_data()
 
-# 3. Yan Menü (Sidebar) - Ekleme Formu Burada
+# --- GÖRSEL TEMA (CSS) ---
+# --- MODERN FOOD INNOVATION THEME ---
+st.markdown("""
+    <style>
+    /* Ana Arka Plan: Modern ve ferah bir fildişi/beyaz */
+    .stApp {
+        background-color: #FDFDFB;
+    }
+    
+    /* Yan Menü: Hafif bitki yeşili tonu (Profesyonel ve sakin) */
+    section[data-testid="stSidebar"] {
+        background-color: #F1F4F0;
+        border-right: 1px solid #E0E4DF;
+    }
+
+    /* Başlıklar: Derin Orman Yeşili (Güven ve doğallık verir) */
+    h1, h2, h3 {
+        color: #2D463E !important;
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+    }
+
+    /* Metinler: Okunabilirlik için çok koyu antrasit */
+    .stMarkdown, p, b, label {
+        color: #1A1C1E !important;
+        font-size: 1.05rem;
+    }
+
+    /* Butonlar: Canlı Turuncu (İştah açıcı ve aksiyon çağrısı) */
+    .stButton>button {
+        background-color: #E67E22;
+        color: white !important;
+        border: none;
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .stButton>button:hover {
+        background-color: #D35400;
+        transform: translateY(-2px);
+    }
+
+    /* Bilgi Kutuları: Soft Yeşil (Tazelik hissi) */
+    .stAlert {
+        background-color: #EBF2ED;
+        color: #2D463E;
+        border: 1px solid #D1DDD4;
+    }
+
+    /* Metricler (Kategoriler) */
+    [data-testid="stMetricValue"] {
+        color: #E67E22 !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+# 3. Yan Menü (Sidebar)
+st.sidebar.title("👨‍🍳 Control Panel")
+
+# --- Malzeme Ekleme Formu ---
 st.sidebar.header("➕ Add New Ingredient")
 with st.sidebar.form("add_form", clear_on_submit=True):
-    new_name = st.text_input("Ingredient Name:").capitalize()
+    new_name = st.text_input("Name:").strip().capitalize()
     new_cat = st.selectbox("Category:", ["Vegetables", "Fruits", "Proteins", "Sweets", "Spices", "Other"])
     new_flavor = st.selectbox("Flavor Profile:", ["Neutral", "Sweet", "Sour", "Bitter", "Spicy", "Umami"])
-    new_pairs = st.text_area("Pairings (Separate with commas):")
+    new_pairs = st.text_area("Pairings (comma separated):")
     submit = st.form_submit_button("Save to Library")
-    # --- SIDEBAR: MALZEME SİLME ---
-st.sidebar.header("🗑️ Delete Ingredient")
-delete_target = st.sidebar.selectbox("Select to delete:", ["None"] + list(data.keys()))
-if st.sidebar.button("Delete from Library"):
-    if delete_target != "None":
-        del data[delete_target]
-        save_data(data)
-        st.sidebar.success(f"Removed {delete_target}!")
-        st.rerun()
 
     if submit:
         if new_name and new_pairs:
-            # 1. İsmi ve eşleşmeleri temizle (Boşlukları sil)
-            clean_name = new_name.strip().capitalize()
             pair_list = [p.strip().capitalize() for p in new_pairs.split(",") if p.strip()]
-            
-            # 2. Veriyi belleğe (data sözlüğüne) ekle
-            data[clean_name] = {
-                "pairings": pair_list, 
-                "category": new_cat, 
-                "flavor": new_flavor
-            }
-            
-            # 3. Dosyaya yaz ve mutlaka kaydet
+            data[new_name] = {"pairings": pair_list, "category": new_cat, "flavor": new_flavor}
             save_data(data)
-            
-            # 4. Başarı mesajı ver ve sayfayı ZORLA yenile
-            st.sidebar.success(f"✅ {clean_name} added to database!")
-            st.rerun() 
-        else:
-            st.sidebar.error("⚠️ Please fill in all fields!")
-# 4. Ana Sayfa Arayüzü
-st.title("👨‍🍳 Food Innovation Assistant")
-st.markdown("Discover perfect flavor pairings for your culinary creations.")
+            st.sidebar.success(f"Added {new_name}!")
+            st.rerun()
 
-search = st.text_input("Search an ingredient (e.g. Tomato):").capitalize()
-# --- SURPRISE ME SECTION ---
-if st.button("🎲 Surprise Me! (Get Inspired)"):
+# --- Malzeme Silme ---
+st.sidebar.header("🗑️ Management")
+delete_target = st.sidebar.selectbox("Select to delete:", ["None"] + sorted(list(data.keys())))
+if st.sidebar.button("Delete Selected"):
+    if delete_target != "None":
+        del data[delete_target]
+        save_data(data)
+        st.sidebar.warning(f"Deleted {delete_target}")
+        st.rerun()
+
+# 4. Ana Sayfa
+st.title("🍳 Food Innovation Assistant")
+st.write("Find the perfect match for your ingredients and spark your creativity!")
+
+# --- SURPRISE ME BUTONU ---
+if st.button("🎲 Surprise Me!"):
     if data:
-        # Kütüphaneden rastgele bir malzeme seç
-        random_ingredient = random.choice(list(data.keys()))
-        
-        # Kutlama efektleri
-        st.balloons() 
-        
-        # Sonucu şık bir kutuda göster
-        st.markdown(f"""
-        <div style="background-color:#f0f2f6; padding:20px; border-radius:10px; border-left: 5px solid #ff4b4b;">
-            <h3 style="margin:0;">Today's Inspiration: {random_ingredient}</h3>
-            <p style="font-size:18px;">Try pairing it with: <b>{", ".join(data[random_ingredient]['pairings'])}</b></p>
-        </div>
-        """, unsafe_allow_html=True)
-    else:
-        st.warning("Your library is empty. Add some ingredients first!")
+        ri = random.choice(list(data.keys()))
+        st.balloons()
+        st.info(f"Today's Inspiration: **{ri}**")
+        st.write(f"**Flavor:** {data[ri].get('flavor', 'Neutral')} | **Pairs with:** {', '.join(data[ri]['pairings'])}")
+
+st.divider()
+
+# --- ARAMA BÖLÜMÜ ---
+search = st.text_input("What are you cooking with? (e.g., Tomato)").strip().capitalize()
 
 if search:
     if search in data:
         item = data[search]
-        st.success(f"### Results for {search}")
+        st.success(f"### {search}")
+        c1, c2 = st.columns(2)
+        c1.metric("Category", item['category'])
+        c2.metric("Flavor Profile", item.get('flavor', 'Neutral'))
         
-        col1, col2 = st.columns(2)
-        col1.metric("Category", item['category'])
-        
-        st.write("**Recommended Pairings:**")
-        # Şık butonlar/etiketler şeklinde gösterim
-        for p in item['pairings']:
-            st.info(f"✨ {p}")
+        st.write("**Best Pairings:**")
+        cols = st.columns(3)
+        for idx, p in enumerate(item['pairings']):
+            cols[idx % 3].info(f"✨ {p}")
     else:
-        st.warning(f"I don't know '{search}' yet. You can add it using the sidebar!")
+        st.warning(f"'{search}' is not in the library yet. You can add it from the sidebar!")
 
-# Geliştirici Modu (İhtiyaç duyarsan açarsın)
-if st.sidebar.checkbox("Show Library Details"):
-    st.divider()
-    st.write(f"Total items in library: {len(data)}")
+# Alt Bilgi / Debug
+if st.sidebar.checkbox("Developer Mode"):
+    st.write("### Database Preview")
     st.json(data)
-    # Kodun en altına ekle:
-st.write("Debug - Current Keys in Database:", list(data.keys()))

@@ -1,44 +1,17 @@
 {
     "Tomato": {
-        "pairings": [
-            "Basil",
-            "Garlic",
-            "Mozzarella"
-        ],
-        "category": "Vegetables"
+        "pairings": ["Basil", "Garlic", "Mozzarella"],
+        "category": "Vegetables",
+        "flavor": "Sour"
     },
     "Chocolate": {
-        "pairings": [
-            "Orange",
-            "Mint",
-            "Hazelnut"
-        ],
-        "category": "Sweets"
+        "pairings": ["Orange", "Mint", "Hazelnut"],
+        "category": "Sweets",
+        "flavor": "Sweet"
     },
-    "Strawberry": {
-        "pairings": [
-            "Sugar",
-            "Cream",
-            "Vanilla",
-            "Chocolate",
-            "Banana",
-            "Raspberry",
-            "Blueberry",
-            "Lemon",
-            "Lime",
-            "Orange",
-            "Mint",
-            "Basil",
-            "Balsamic vinegar",
-            "Honey",
-            "Yogurt",
-            "Mascarpone",
-            "Cream cheese",
-            "Almond",
-            "Pistachio",
-            "Coconut",
-            "Black pepper"
-        ],
-        "category": "Fruits"
+    "Lemon grass": {
+        "pairings": ["Ginger", "Garlic", "Coconut Milk"],
+        "category": "Spices",
+        "flavor": "Spicy"
     }
 }
