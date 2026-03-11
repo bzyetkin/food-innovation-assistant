@@ -1,17 +1,634 @@
 {
     "Tomato": {
-        "pairings": ["Basil", "Garlic", "Mozzarella"],
+        "pairings": [
+            "Basil",
+            "Garlic",
+            "Mozzarella"
+        ],
         "category": "Vegetables",
         "flavor": "Sour"
     },
     "Chocolate": {
-        "pairings": ["Orange", "Mint", "Hazelnut"],
+        "pairings": [
+            "Orange",
+            "Mint",
+            "Hazelnut"
+        ],
         "category": "Sweets",
         "flavor": "Sweet"
     },
     "Lemon grass": {
-        "pairings": ["Ginger", "Garlic", "Coconut Milk"],
+        "pairings": [
+            "Ginger",
+            "Garlic",
+            "Coconut milk",
+            "Chili",
+            "Chicken"
+        ],
         "category": "Spices",
         "flavor": "Spicy"
+    },
+    "Olive oil": {
+        "pairings": [
+            "Lemon",
+            "Garlic",
+            "Rosemary"
+        ],
+        "category": "Lipids",
+        "flavor": "Neutral",
+        "fat_content": 100,
+        "texture": "Liquid",
+        "function": "Base"
+    },
+    "Cocoa butter": {
+        "pairings": [
+            "Sugar",
+            "Milk",
+            "Vanilla"
+        ],
+        "category": "Lipids",
+        "flavor": "Sweet",
+        "fat_content": 100,
+        "texture": "Solid",
+        "function": "Base"
+    },
+    "Xanthan gum": {
+        "pairings": [
+            "Water",
+            "Acetic acid",
+            "Salt"
+        ],
+        "category": "Additives",
+        "flavor": "Neutral",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Thickener"
+    },
+    "Heavy cream": {
+        "pairings": [
+            "Vanilla",
+            "Coffee",
+            "Strawberry"
+        ],
+        "category": "Dairy",
+        "flavor": "Neutral",
+        "fat_content": 35,
+        "texture": "Creamy",
+        "function": "Base"
+    },
+    "Butter (82% fat)": {
+        "pairings": [
+            "Vanilla",
+            "Salt",
+            "Honey"
+        ],
+        "category": "Dairy",
+        "flavor": "Neutral",
+        "fat_content": 82,
+        "texture": "Solid",
+        "function": "Base"
+    },
+    "Palm oil": {
+        "pairings": [
+            "Cocoa",
+            "Sugar",
+            "Flour"
+        ],
+        "category": "Lipids",
+        "flavor": "Neutral",
+        "fat_content": 100,
+        "texture": "Solid",
+        "function": "Base"
+    },
+    "Soy lecithin": {
+        "pairings": [
+            "Oil",
+            "Water",
+            "Chocolate"
+        ],
+        "category": "Additives",
+        "flavor": "Neutral",
+        "fat_content": 90,
+        "texture": "Liquid",
+        "function": "Emulsifier"
+    },
+    "Guar gum": {
+        "pairings": [
+            "Milk",
+            "Sugar",
+            "Fruit"
+        ],
+        "category": "Additives",
+        "flavor": "Neutral",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Stabilizer"
+    },
+    "Maltodextrin": {
+        "pairings": [
+            "Flavor oils",
+            "Spices"
+        ],
+        "category": "Carbs",
+        "flavor": "Neutral",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Bulking Agent"
+    },
+    "Casein protein": {
+        "pairings": [
+            "Calcium",
+            "Phosphate"
+        ],
+        "category": "Proteins",
+        "flavor": "Neutral",
+        "fat_content": 1,
+        "texture": "Powder",
+        "function": "Emulsifier"
+    },
+    "Pectin (high methoxyl)": {
+        "pairings": [
+            "Sugar",
+            "Citric acid"
+        ],
+        "category": "Additives",
+        "flavor": "Sour",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Gelling Agent"
+    },
+    "Agar agar": {
+        "pairings": [
+            "Fruit puree",
+            "Sugar"
+        ],
+        "category": "Additives",
+        "flavor": "Neutral",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Gelling Agent"
+    },
+    "Modified corn starch": {
+        "pairings": [
+            "Water",
+            "Vinegar",
+            "Sugar"
+        ],
+        "category": "Carbs",
+        "flavor": "Neutral",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Thickener"
+    },
+    "Glycerin": {
+        "pairings": [
+            "Alcohol",
+            "Water"
+        ],
+        "category": "Additives",
+        "flavor": "Sweet",
+        "fat_content": 0,
+        "texture": "Liquid",
+        "function": "Humectant"
+    },
+    "Sorbitol": {
+        "pairings": [
+            "Mint",
+            "Citric acid"
+        ],
+        "category": "Additives",
+        "flavor": "Sweet",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Humectant"
+    },
+    "Inulin": {
+        "pairings": [
+            "Milk",
+            "Cocoa",
+            "Stevia"
+        ],
+        "category": "Carbs",
+        "flavor": "Neutral",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Prebiotic/Texturizer"
+    },
+    "Whey protein isolate": {
+        "pairings": [
+            "Berries",
+            "Cocoa",
+            "Water"
+        ],
+        "category": "Proteins",
+        "flavor": "Neutral",
+        "fat_content": 1,
+        "texture": "Powder",
+        "function": "Base"
+    },
+    "Coconut fat (refined)": {
+        "pairings": [
+            "Vanilla",
+            "Pineapple"
+        ],
+        "category": "Lipids",
+        "flavor": "Neutral",
+        "fat_content": 100,
+        "texture": "Solid",
+        "function": "Base"
+    },
+    "Mono-diglycerides": {
+        "pairings": [
+            "Oil",
+            "Water",
+            "Flour"
+        ],
+        "category": "Additives",
+        "flavor": "Neutral",
+        "fat_content": 100,
+        "texture": "Solid",
+        "function": "Emulsifier"
+    },
+    "Carrageenan (kappa)": {
+        "pairings": [
+            "Milk",
+            "Calcium"
+        ],
+        "category": "Additives",
+        "flavor": "Neutral",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Gelling Agent"
+    },
+    "Pea protein": {
+        "pairings": [
+            "Rice",
+            "Herbs",
+            "Water"
+        ],
+        "category": "Proteins",
+        "flavor": "Neutral",
+        "fat_content": 2,
+        "texture": "Powder",
+        "function": "Base"
+    },
+    "Gelatin (250 bloom)": {
+        "pairings": [
+            "Water",
+            "Sugar",
+            "Acid"
+        ],
+        "category": "Proteins",
+        "flavor": "Neutral",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Gelling Agent"
+    },
+    "Erythritol": {
+        "pairings": [
+            "Stevia",
+            "Monk fruit"
+        ],
+        "category": "Additives",
+        "flavor": "Sweet",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Sweetener"
+    },
+    "Dextrose": {
+        "pairings": [
+            "Water",
+            "Yeast",
+            "Salt"
+        ],
+        "category": "Carbs",
+        "flavor": "Sweet",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Fermentation"
+    },
+    "Shea butter": {
+        "pairings": [
+            "Cocoa",
+            "Sugar"
+        ],
+        "category": "Lipids",
+        "flavor": "Neutral",
+        "fat_content": 100,
+        "texture": "Solid",
+        "function": "Base"
+    },
+    "Egg yolk powder": {
+        "pairings": [
+            "Oil",
+            "Vinegar",
+            "Salt"
+        ],
+        "category": "Proteins",
+        "flavor": "Neutral",
+        "fat_content": 33,
+        "texture": "Powder",
+        "function": "Emulsifier"
+    },
+    "Sodium alginate": {
+        "pairings": [
+            "Calcium lactate",
+            "Water"
+        ],
+        "category": "Additives",
+        "flavor": "Neutral",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Gelling Agent"
+    },
+    "Locust bean gum": {
+        "pairings": [
+            "Guar gum",
+            "Carrageenan"
+        ],
+        "category": "Additives",
+        "flavor": "Neutral",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Thickener"
+    },
+    "Stevia extract": {
+        "pairings": [
+            "Erythritol",
+            "Water"
+        ],
+        "category": "Additives",
+        "flavor": "Sweet",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Sweetener"
+    },
+    "Citric acid": {
+        "pairings": [
+            "Sugar",
+            "Lemon",
+            "Water"
+        ],
+        "category": "Additives",
+        "flavor": "Sour",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Acidulant"
+    },
+    "Ascorbic acid": {
+        "pairings": [
+            "Fruit juice",
+            "Flour"
+        ],
+        "category": "Additives",
+        "flavor": "Sour",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Antioxidant"
+    },
+    "Sodium caseinate": {
+        "pairings": [
+            "Fat",
+            "Water",
+            "Air"
+        ],
+        "category": "Proteins",
+        "flavor": "Neutral",
+        "fat_content": 1,
+        "texture": "Powder",
+        "function": "Stabilizer"
+    },
+    "Vital wheat gluten": {
+        "pairings": [
+            "Water",
+            "Flour",
+            "Yeast"
+        ],
+        "category": "Proteins",
+        "flavor": "Neutral",
+        "fat_content": 2,
+        "texture": "Powder",
+        "function": "Binder"
+    },
+    "Almond flour": {
+        "pairings": [
+            "Chocolate",
+            "Honey"
+        ],
+        "category": "Proteins",
+        "flavor": "Nutty",
+        "fat_content": 50,
+        "texture": "Powder",
+        "function": "Base"
+    },
+    "Lactose": {
+        "pairings": [
+            "Milk",
+            "Vanilla"
+        ],
+        "category": "Carbs",
+        "flavor": "Sweet",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Bulking Agent"
+    },
+    "Mct oil": {
+        "pairings": [
+            "Coffee",
+            "Essential oils"
+        ],
+        "category": "Lipids",
+        "flavor": "Neutral",
+        "fat_content": 100,
+        "texture": "Liquid",
+        "function": "Carrier"
+    },
+    "Potassium sorbate": {
+        "pairings": [
+            "Water",
+            "Vinegar"
+        ],
+        "category": "Additives",
+        "flavor": "Neutral",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Preservative"
+    },
+    "Calcium lactate": {
+        "pairings": [
+            "Alginate",
+            "Water"
+        ],
+        "category": "Additives",
+        "flavor": "Neutral",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Firming Agent"
+    },
+    "Potato starch": {
+        "pairings": [
+            "Water",
+            "Salt"
+        ],
+        "category": "Carbs",
+        "flavor": "Neutral",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Thickener"
+    },
+    "Tapioca pearls": {
+        "pairings": [
+            "Milk",
+            "Sugar",
+            "Tea"
+        ],
+        "category": "Carbs",
+        "flavor": "Neutral",
+        "fat_content": 0,
+        "texture": "Granular",
+        "function": "Texturizer"
+    },
+    "Sunflower oil": {
+        "pairings": [
+            "Herbs",
+            "Vinegar"
+        ],
+        "category": "Lipids",
+        "flavor": "Neutral",
+        "fat_content": 100,
+        "texture": "Liquid",
+        "function": "Base"
+    },
+    "Canola oil": {
+        "pairings": [
+            "Spices",
+            "Eggs"
+        ],
+        "category": "Lipids",
+        "flavor": "Neutral",
+        "fat_content": 100,
+        "texture": "Liquid",
+        "function": "Base"
+    },
+    "Beeswax": {
+        "pairings": [
+            "Essential oils",
+            "Lipids"
+        ],
+        "category": "Additives",
+        "flavor": "Neutral",
+        "fat_content": 100,
+        "texture": "Solid",
+        "function": "Glazing Agent"
+    },
+    "Gum arabic": {
+        "pairings": [
+            "Flavor oils",
+            "Water"
+        ],
+        "category": "Additives",
+        "flavor": "Neutral",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Emulsifier"
+    },
+    "Polysorbate 80": {
+        "pairings": [
+            "Water",
+            "Oil",
+            "Flavors"
+        ],
+        "category": "Additives",
+        "flavor": "Neutral",
+        "fat_content": 100,
+        "texture": "Liquid",
+        "function": "Solubilizer"
+    },
+    "Succinic acid": {
+        "pairings": [
+            "Savory flavors"
+        ],
+        "category": "Additives",
+        "flavor": "Sour",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Flavor Enhancer"
+    },
+    "Malic acid": {
+        "pairings": [
+            "Apple",
+            "Grape"
+        ],
+        "category": "Additives",
+        "flavor": "Sour",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Acidulant"
+    },
+    "Tartaric acid": {
+        "pairings": [
+            "Grapes",
+            "Baking soda"
+        ],
+        "category": "Additives",
+        "flavor": "Sour",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Acidulant"
+    },
+    "Rice protein": {
+        "pairings": [
+            "Pea protein",
+            "Cocoa"
+        ],
+        "category": "Proteins",
+        "flavor": "Neutral",
+        "fat_content": 3,
+        "texture": "Powder",
+        "function": "Base"
+    },
+    "Avocado oil": {
+        "pairings": [
+            "Lime",
+            "Salt"
+        ],
+        "category": "Lipids",
+        "flavor": "Neutral",
+        "fat_content": 100,
+        "texture": "Liquid",
+        "function": "Base"
+    },
+    "Baking powder": {
+        "pairings": [
+            "Flour",
+            "Water"
+        ],
+        "category": "Additives",
+        "flavor": "Neutral",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Leavening"
+    },
+    "Yeast extract": {
+        "pairings": [
+            "Salt",
+            "Spices"
+        ],
+        "category": "Additives",
+        "flavor": "Umami",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Flavor Enhancer"
+    },
+    "Msg": {
+        "pairings": [
+            "Meat",
+            "Soy sauce"
+        ],
+        "category": "Additives",
+        "flavor": "Umami",
+        "fat_content": 0,
+        "texture": "Powder",
+        "function": "Flavor Enhancer"
     }
 }

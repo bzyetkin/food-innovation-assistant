@@ -2,9 +2,10 @@ import streamlit as st
 import json
 import os
 import random
+import pandas as pd # Excel/CSV işlemleri için gerekli
 
 # 1. Sayfa Yapılandırması
-st.set_page_config(page_title="Chef's Innovation Assistant", page_icon="🍳", layout="wide")
+st.set_page_config(page_title="R&D Food Lab", page_icon="🧪", layout="wide")
 
 # 2. Veri Fonksiyonları
 def load_data():
@@ -15,8 +16,7 @@ def load_data():
     try:
         with open('data.json', 'r', encoding='utf-8') as file:
             return json.load(file)
-    except:
-        return {}
+    except: return {}
 
 def save_data(new_data):
     with open('data.json', 'w', encoding='utf-8') as file:
@@ -24,126 +24,105 @@ def save_data(new_data):
 
 data = load_data()
 
-# --- GÖRSEL TEMA (CSS) ---
-# --- MODERN FOOD INNOVATION THEME ---
+# --- GÖRSEL TEMA ---
 st.markdown("""
     <style>
-    /* Ana Arka Plan: Modern ve ferah bir fildişi/beyaz */
-    .stApp {
-        background-color: #FDFDFB;
-    }
-    
-    /* Yan Menü: Hafif bitki yeşili tonu (Profesyonel ve sakin) */
-    section[data-testid="stSidebar"] {
-        background-color: #F1F4F0;
-        border-right: 1px solid #E0E4DF;
-    }
-
-    /* Başlıklar: Derin Orman Yeşili (Güven ve doğallık verir) */
-    h1, h2, h3 {
-        color: #2D463E !important;
-        font-family: 'Inter', sans-serif;
-        font-weight: 700;
-    }
-
-    /* Metinler: Okunabilirlik için çok koyu antrasit */
-    .stMarkdown, p, b, label {
-        color: #1A1C1E !important;
-        font-size: 1.05rem;
-    }
-
-    /* Butonlar: Canlı Turuncu (İştah açıcı ve aksiyon çağrısı) */
-    .stButton>button {
-        background-color: #E67E22;
-        color: white !important;
-        border: none;
-        border-radius: 8px;
-        padding: 0.5rem 1rem;
-        transition: all 0.3s ease;
-    }
-    
-    .stButton>button:hover {
-        background-color: #D35400;
-        transform: translateY(-2px);
-    }
-
-    /* Bilgi Kutuları: Soft Yeşil (Tazelik hissi) */
-    .stAlert {
-        background-color: #EBF2ED;
-        color: #2D463E;
-        border: 1px solid #D1DDD4;
-    }
-
-    /* Metricler (Kategoriler) */
-    [data-testid="stMetricValue"] {
-        color: #E67E22 !important;
-    }
+    .stApp { background-color: #F8F9FA; }
+    h1, h2 { color: #1B4332 !important; }
+    .stButton>button { background-color: #2D6A4F; color: white; border-radius: 5px; }
     </style>
     """, unsafe_allow_html=True)
 
 # 3. Yan Menü (Sidebar)
-st.sidebar.title("👨‍🍳 Control Panel")
+st.sidebar.title("🧪 R&D Control Center")
 
-# --- Malzeme Ekleme Formu ---
-st.sidebar.header("➕ Add New Ingredient")
+# --- TOPLU VERİ YÜKLEME (CSV/EXCEL) ---
+st.sidebar.header("📂 Bulk Import (Excel/CSV)")
+uploaded_file = st.sidebar.file_uploader("Upload your ingredient list", type=['csv', 'xlsx'])
+
+if uploaded_file is not None:
+    try:
+        if uploaded_file.name.endswith('.csv'):
+            df = pd.read_csv(uploaded_file)
+        else:
+            df = pd.read_excel(uploaded_file)
+        
+        if st.sidebar.button("Process & Import File"):
+            for index, row in df.iterrows():
+                name = str(row['Name']).strip().capitalize()
+                # Excel'deki sütunları JSON yapımıza eşliyoruz
+                data[name] = {
+                    "pairings": [p.strip().capitalize() for p in str(row['Pairings']).split(",")],
+                    "category": row['Category'],
+                    "flavor": row['Flavor'],
+                    "fat_content": int(row['Fat']),
+                    "texture": row['Texture'],
+                    "function": row['Function']
+                }
+            save_data(data)
+            st.sidebar.success(f"Successfully imported {len(df)} items!")
+            st.rerun()
+    except Exception as e:
+        st.sidebar.error(f"Error: Check column names! {e}")
+
+# --- TEKİL VERİ EKLEME FORMU ---
+st.sidebar.divider()
+st.sidebar.header("➕ Add Single Ingredient")
 with st.sidebar.form("add_form", clear_on_submit=True):
     new_name = st.text_input("Name:").strip().capitalize()
-    new_cat = st.selectbox("Category:", ["Vegetables", "Fruits", "Proteins", "Sweets", "Spices", "Other"])
-    new_flavor = st.selectbox("Flavor Profile:", ["Neutral", "Sweet", "Sour", "Bitter", "Spicy", "Umami"])
+    new_cat = st.selectbox("Category:", ["Proteins", "Lipids", "Carbs", "Dairy", "Spices", "Additives", "Other"])
+    new_flavor = st.selectbox("Flavor:", ["Neutral", "Sweet", "Sour", "Bitter", "Spicy", "Umami"])
+    new_fat = st.slider("Fat Content (%)", 0, 100, 0)
+    new_texture = st.selectbox("Texture:", ["Liquid", "Powder", "Creamy", "Solid", "Gel"])
+    new_function = st.selectbox("Function:", ["Base", "Emulsifier", "Thickener", "Flavoring"])
     new_pairs = st.text_area("Pairings (comma separated):")
     submit = st.form_submit_button("Save to Library")
 
-    if submit:
-        if new_name and new_pairs:
-            pair_list = [p.strip().capitalize() for p in new_pairs.split(",") if p.strip()]
-            data[new_name] = {"pairings": pair_list, "category": new_cat, "flavor": new_flavor}
-            save_data(data)
-            st.sidebar.success(f"Added {new_name}!")
-            st.rerun()
+    if submit and new_name:
+        pair_list = [p.strip().capitalize() for p in new_pairs.split(",") if p.strip()]
+        data[new_name] = {
+            "pairings": pair_list, "category": new_cat, "flavor": new_flavor,
+            "fat_content": new_fat, "texture": new_texture, "function": new_function
+        }
+        save_data(data)
+        st.sidebar.success(f"Registered: {new_name}")
+        st.rerun()
 
-# --- Malzeme Silme ---
-st.sidebar.header("🗑️ Management")
-delete_target = st.sidebar.selectbox("Select to delete:", ["None"] + sorted(list(data.keys())))
-if st.sidebar.button("Delete Selected"):
+# --- SİLME ---
+delete_target = st.sidebar.selectbox("Delete Item:", ["None"] + sorted(list(data.keys())))
+if st.sidebar.button("Delete"):
     if delete_target != "None":
         del data[delete_target]
         save_data(data)
-        st.sidebar.warning(f"Deleted {delete_target}")
         st.rerun()
 
 # 4. Ana Sayfa
-st.title("🍳 Food Innovation Assistant")
-st.write("Find the perfect match for your ingredients and spark your creativity!")
+st.title("🧪 Food Innovation & R&D Lab")
+st.write("Professional formulation and ingredient pairing analysis.")
 
-# --- SURPRISE ME BUTONU ---
-if st.button("🎲 Surprise Me!"):
-    if data:
-        ri = random.choice(list(data.keys()))
-        st.balloons()
-        st.info(f"Today's Inspiration: **{ri}**")
-        st.write(f"**Flavor:** {data[ri].get('flavor', 'Neutral')} | **Pairs with:** {', '.join(data[ri]['pairings'])}")
-
-st.divider()
-
-# --- ARAMA BÖLÜMÜ ---
-search = st.text_input("What are you cooking with? (e.g., Tomato)").strip().capitalize()
+# ARAMA
+search = st.text_input("Search technical database:").strip().capitalize()
 
 if search:
     if search in data:
         item = data[search]
-        st.success(f"### {search}")
-        c1, c2 = st.columns(2)
-        c1.metric("Category", item['category'])
-        c2.metric("Flavor Profile", item.get('flavor', 'Neutral'))
+        st.success(f"### TECHNICAL DATA: {search}")
         
-        st.write("**Best Pairings:**")
-        cols = st.columns(3)
+        c1, c2, c3 = st.columns(3)
+        c1.metric("Fat Content", f"%{item.get('fat_content', 0)}")
+        c2.metric("Function", item.get('function', 'N/A'))
+        c3.metric("Category", item['category'])
+        
+        st.write(f"**Texture Profile:** {item.get('texture', 'N/A')} | **Flavor:** {item.get('flavor', 'N/A')}")
+        
+        st.divider()
+        st.write("**R&D Pairing Suggestions:**")
+        cols = st.columns(4)
         for idx, p in enumerate(item['pairings']):
-            cols[idx % 3].info(f"✨ {p}")
+            cols[idx % 4].info(f"🧬 {p}")
     else:
-        st.warning(f"'{search}' is not in the library yet. You can add it from the sidebar!")
+        st.warning("Ingredient not found in R&D database.")
 
-# Alt Bilgi / Debug
-if st.sidebar.checkbox("Developer Mode"):
-    st.write("### Database Preview")
+# Developer Mode
+if st.sidebar.checkbox("Show Raw Database"):
     st.json(data)
