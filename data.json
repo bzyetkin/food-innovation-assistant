@@ -1,25 +1,12 @@
 {
-    "Tomato": [
-        "Basil",
-        "Garlic",
-        "Olive Oil",
-        "Mozzarella"
-    ],
-    "Chocolate": [
-        "Orange",
-        "Mint",
-        "Hazelnut",
-        "Sea Salt"
-    ],
-    "Apple": [
-        "Cinnamon",
-        "Walnut",
-        "Caramel",
-        "Honey"
-    ],
-    "Coffee": [
-        "\"milk",
-        "Chocolate",
-        "Hazelnut"
-    ]
+  "Tomato": ["Basil", "Garlic", "Mozzarella", "Olive Oil", "Balsamic Vinegar"],
+  "Chocolate": ["Orange", "Mint", "Hazelnut", "Sea Salt", "Chili", "Raspberry"],
+  "Apple": ["Cinnamon", "Walnut", "Caramel", "Honey", "Cheddar Cheese"],
+  "Coffee": ["Milk", "Cardamom", "Vanilla", "Chocolate", "Cinnamon"],
+  "Salmon": ["Dill", "Lemon", "Capers", "Asparagus", "Cream Cheese"],
+  "Chicken": ["Rosemary", "Lemon", "Garlic", "Thyme", "Mushrooms"],
+  "Avocado": ["Lime", "Cilantro", "Chili Flakes", "Egg", "Red Onion"],
+  "Strawberry": ["Balsamic Vinegar", "Black Pepper", "Cream", "Mint", "Spinach"],
+  "Ginger": ["Honey", "Lemon", "Soy Sauce", "Carrot", "Garlic"],
+  "Beef": ["Red Wine", "Garlic", "Thyme", "Onion", "Potatoes"]
 }
